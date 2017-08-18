@@ -1,7 +1,7 @@
 (ns oncesaid.image
   (:gen-class)
   (:import [java.awt.image BufferedImage BufferedImageOp]
-           [java.awt Color Font]
+           [java.awt Color Font RenderingHints]
            [java.awt.geom.Ellipse2D]
            [javax.imageio ImageIO]
            [java.io File ByteArrayInputStream ByteArrayOutputStream]))
@@ -31,7 +31,7 @@
   "splite text into lines base on length"
   [text charw]
   (let* [limit (- IMAGE_WIDTH (* PADDING 2))
-         count (int (/ limit charw))]
+         count (+ 0 (int (/ limit charw)))]
     (map (fn [s] (apply str s)) (partition count count nil text))))
 
 (split-text "A wise man once said, go fuck your self" 10)
@@ -45,17 +45,18 @@
         g (. image getGraphics)]
 
     ;; draw a
-    (. g drawImage a (- (/ IMAGE_WIDTH 2) (/ AVATAR_SIZE 2)) 70 nil)
+    (. g drawImage a (- (/ IMAGE_WIDTH 2) (/ AVATAR_SIZE 2)) 64 nil)
 
     ;; draw text
     (. g setColor Color/BLACK)
     (. g setFont FONT)
+    (. g setRenderingHint RenderingHints/KEY_TEXT_ANTIALIASING RenderingHints/VALUE_TEXT_ANTIALIAS_ON)
 
     (let [texts (split-text text (. (. g getFontMetrics) stringWidth "太"))]
       (doseq [[s i] (map vector texts (range))]
         (. g drawString s PADDING (+ 240 (* i 20)))))
 
-    (. g drawString (str "──  " name) 100 320)
+    (. g drawString (str "──  " name) 80 320)
 
     ;; dispose
     (. g dispose)
