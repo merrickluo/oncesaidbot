@@ -4,8 +4,7 @@
            [java.awt Color Font]
            [java.awt.geom.Ellipse2D]
            [javax.imageio ImageIO]
-
-           [java.io File]))
+           [java.io File ByteArrayInputStream ByteArrayOutputStream]))
 
 (def IMAGE_WIDTH 289)
 (def IMAGE_HEIGHT 400)
@@ -39,27 +38,27 @@
 
 (defn create
   "create new image"
-  [avatar text name]
-  (let* [image (ImageIO/read (File. "background.png"))
-         file (File. "image.png")
-         a (circle-avatar avatar)
-         g (. image getGraphics)]
+  [avatar-data text name]
+  (let [image (ImageIO/read (File. "background.png"))
+        avatar (ImageIO/read (ByteArrayInputStream. avatar-data))
+        a (circle-avatar avatar)
+        g (. image getGraphics)]
 
     ;; draw a
-    (. g drawImage a (- (/ IMAGE_WIDTH 2) (/ AVATAR_WIDTH 2)) 70 nil)
+    (. g drawImage a (- (/ IMAGE_WIDTH 2) (/ AVATAR_SIZE 2)) 70 nil)
 
     ;; draw text
     (. g setColor Color/BLACK)
     (. g setFont FONT)
 
     (let [texts (split-text text (. (. g getFontMetrics) stringWidth "太"))]
-      (println texts)
       (doseq [[s i] (map vector texts (range))]
-        (println s)
         (. g drawString s PADDING (+ 240 (* i 20)))))
 
-    (. g drawString (str "────  " name) 120 320)
+    (. g drawString (str "──  " name) 100 320)
 
     ;; dispose
     (. g dispose)
-    (ImageIO/write image "png" file)))
+    (let [out (ByteArrayOutputStream.)]
+      (ImageIO/write image "png" out)
+      (. out toByteArray))))
