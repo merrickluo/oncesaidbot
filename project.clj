@@ -4,7 +4,7 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [morse "0.2.5-SNAPSHOT"]]
+                 [morse "0.3.0-SNAPSHOT"]]
   :plugins [[lein-modules "0.3.11"]]
   :modules {:dirs ["modules/morse"]
             :subprocess nil}

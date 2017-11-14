@@ -13,7 +13,7 @@
 
 (def FONT (let [f (Font/createFont
                    Font/TRUETYPE_FONT
-                   (File. "SourceHanSerif-Bold.ttc"))]
+                   (File. "res/SourceHanSerif-Bold.ttc"))]
             (. f deriveFont 16.0)))
 
 (defn circle-avatar
@@ -39,7 +39,7 @@
 (defn create
   "create new image"
   [avatar-data text name]
-  (let [image (ImageIO/read (File. "background.png"))
+  (let [image (ImageIO/read (File. "res/background.png"))
         avatar (ImageIO/read (ByteArrayInputStream. avatar-data))
         a (circle-avatar avatar)
         g (. image getGraphics)]

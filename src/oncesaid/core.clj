@@ -35,4 +35,4 @@
                (t/send-photo token id img-data))))
 
 (def channel (p/start token handler))
-(p/stop channel)
+;; (p/stop channel)
