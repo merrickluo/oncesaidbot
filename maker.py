@@ -29,22 +29,28 @@ def name_width(name):
 def make_said(avatar_file, text, name):
     bg = Image.open('res/background.png')
     avatar = circle_avatar(avatar_file)
+
+    # draw avatar
     bg.paste(avatar, (179, 128), avatar)
 
+    # draw text
     draw = ImageDraw.Draw(bg)
-
     text_y = 420 - 36
     for idx, t in enumerate(cjkwrap.wrap(text, 24)):
         text_y += 36
         draw.text((140, text_y), t, 0, font)
 
+    # draw name
     name_x = 589 - 160 - name_width(name)
     name_y = text_y + 60
     draw.text((name_x, name_y), '—— ' + name, 0, font)
 
+    # resize
+    bg = bg.resize((295, 400), Image.ANTIALIAS)
+
     bio = io.BytesIO()
     bio.name = 'oncesaid.png'
-    bg.save(bio, format='PNG')
+    bg.save(bio, format='PNG', optimize=True)
     bio.seek(0)
 
     return bio

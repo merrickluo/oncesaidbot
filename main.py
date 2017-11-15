@@ -21,9 +21,12 @@ def unsupported(bot, update):
     bot.send_message(chat_id=update.message.chat_id,
                      text='I can only deal with forwarded text message.')
 
+def xstr(s):
+    return '' if s is None else s
+
 def oncesaid(bot, update):
     user = update.message.forward_from
-    name = '{} {}'.format(user.first_name, user.last_name)
+    name = '{} {}'.format(xstr(user.first_name), xstr(user.last_name))
     profile_photos = user.get_profile_photos(limit=1)
     if profile_photos.total_count == 0:
         bot.send_message(chat_id=update.message.chat_id,
